@@ -1,3 +1,5 @@
+//META{"name":"Disgalery"}*//
+
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
 }
@@ -9,64 +11,62 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     }
 }
 
-function rescaleImg(Img_el){
-	var width = Img_el.style.width;	
-	var height = Img_el.style.height;
-	//alert(width + "/" + height);
-	//if(width > maxWidth){
-	//    ratio = maxWidth / width;   // get ratio for scaling image
-	//    $(this).css("width", maxWidth); // Set new width
-	//    $(this).css("height", height * ratio);  // Scale height based on ratio
-	//    height = height * ratio;    // Reset height to match scaled image
-	//    width = width * ratio;    // Reset width to match scaled image
-	//}
-}
 var allimgsN;
 var allImgs;
 var allImgslinks;
+var currentImgN = 0;
+var startImgLink;
+//var Counter;
 
-function StartMyDiscordGalery(r){
-    //GET IMAGES
-    allImgs = document.getElementsByClassName("imageWrapper-38T7d9");
-    allimgsN = allImgs.length;
-	if(r!=0)currentImgN = allimgsN;
+var Disgalery = function(){}
 
-    allImgslinks = [allImgs.length];
-    for (var i=0; i < allImgs.length; i++) {
-        allImgslinks[i] = allImgs[i].href;
-    }
+Disgalery.prototype.start = function () {
+	document.onkeydown = checkKey;
+};
 
-    //REMOVE IMAGE
-    document.getElementsByClassName("inner-1_1f7b").remove();
 
-    //AND ADD GALERY
-    var galerySpace = document.getElementsByClassName("modal-2LIEKY");
-    galerySpace[0].innerHTML = '<div style="z-index: 10000; -webkit-flex: 1 0 auto;\
-    flex: 1 0 auto;\
-    display: -webkit-flex;\
-    display: flex;\
-    -webkit-align-items: flex-start;\
-    align-items: flex-start;\
-    -webkit-justify-content: space-around;\
-    justify-content: space-around;\
-    overflow: hidden;\
-    width: auto;" class="a-gal inner-1_1f7b"><img style="max-height: 100vh; max-width: 100%;" class="imageWrapper-38T7d9" id="cimg" src=""><a id="ilink" href=""></img></div>';
+function RunDisgalery(init = 0){
+	
+		//GET IMAGES
+		allImgs = document.getElementsByClassName("da-imageWrapper da-imageZoom da-clickable da-embedWrapper");
+		allimgsN = allImgs.length;
+	
+		allImgslinks = [allImgs.length];
+		for (var i=0; i < allImgs.length; i++) {
+			allImgslinks[i] = allImgs[i].href;
+			//if(allImgslinks[i] == startImgLink[0] && init==1){
+			//	currentImgN = i;
+			//	console.log(currentImgN);
+			//} 
+		}
+	
+		//start GALERY
+		var galerySpace = document.getElementsByClassName("da-modal");
+		galerySpace[0].innerHTML = '<div style="z-index: 10000; -webkit-flex: 1 0 auto;\
+		flex: 1 0 auto;\
+		display: -webkit-flex;\
+		display: flex;\
+		-webkit-align-items: flex-start;\
+		align-items: flex-start;\
+		-webkit-justify-content: space-around;\
+		justify-content: space-around;\
+		overflow: hidden;\
+		width: auto;" class="a-gal inner-1_1f7b"><img style="max-height: 100vh; max-width: 100%;" class="imageWrapper-38T7d9" id="cimg" src=""><a id="ilink" href=""></img></div>';
 
-document.getElementById("cimg").src = allImgslinks[currentImgN];
-
-document.onkeydown = checkKey;
-
+	document.getElementById("cimg").src = allImgslinks[currentImgN];
 }
 
 function scrollImg(n){
 	currentImgN += n;
-	if(currentImgN > allimgsN){
+	if(currentImgN >= allimgsN){
 		currentImgN = 0;
 	}else if(currentImgN < 0){
-		currentImgN = allimgsN;
+		currentImgN = allimgsN-1;
 	}
 	var i = allImgslinks[currentImgN];
 	document.getElementById("cimg").src = i;
+	RunDisgalery();
+	console.log(currentImgN + "/" + allimgsN);
 }
 
 function checkKey(event) {
@@ -75,12 +75,45 @@ function checkKey(event) {
 	var up = 38;
 	var right = 39;
 	var down = 40;
+	var F12 = 123;
+	var F11 = 122;
 	if(x == left || x == up){
     	scrollImg(1);
 	}
 	if(x == right || x == down){
     	scrollImg(-1);
 	}
+	if(x == F12){
+    	RunDisgalery(1);
+	}
+	if(x == F11){ //DOWNLOAD IMAGE
+		var a = $("<a>")
+		.attr("href", allImgslinks[currentImgN])
+		.attr("download", "img.png")
+		.appendTo("body");
+	
+		a[0].click();
+	
+		a.remove();
+	}
 }
 
-StartMyDiscordGalery(1);
+Disgalery.prototype.getSettingsPanel = function () {
+    return "<h3>Settings Panel</h3>";
+};
+
+Disgalery.prototype.getName = function () {
+    return "Disgalery";
+};
+
+Disgalery.prototype.getDescription = function () {
+    return "Disgalery";
+};
+
+Disgalery.prototype.getVersion = function () {
+    return "0.1.0";
+};
+
+Disgalery.prototype.getAuthor = function () {
+    return "906Eventyon";
+};
