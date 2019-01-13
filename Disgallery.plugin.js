@@ -1,4 +1,4 @@
-//META{"name":"Disgalery"}*//
+//META{"name":"Disgallery"}*//
 
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
@@ -18,18 +18,19 @@ var currentImgN = 0;
 var startImgLink;
 var presentationON = false;
 var galerySpace;
+//var Counter;
 
-var Disgalery = function(){}
+var Disgallery = function(){}
 
-Disgalery.prototype.start = function () {
+Disgallery.prototype.start = function () {
 	document.onkeydown = checkKey;
 	document.addEventListener('mouseup', logMouseButton);
 };
 
 
-function RunDisgalery(init = 0){
-		
+function RunDisgallery(init = 0){
 	//GET IMAGES
+
 	allImgs = document.getElementsByClassName("da-imageWrapper da-imageZoom da-clickable da-embedWrapper");
 	allimgsN = allImgs.length;
 
@@ -51,8 +52,6 @@ function RunDisgalery(init = 0){
 	overflow: hidden;\
 	width: auto;" class="a-gal inner-1_1f7b"><img style="max-height: 100vh; max-width: 100%;" class="imageWrapper-38T7d9" id="cimg" src=""><a id="ilink" href=""></img></div>';
 
-		
-	
 	document.getElementById("cimg").src = allImgslinks[currentImgN];
 }
 
@@ -65,8 +64,8 @@ function scrollImg(n){
 	}
 	var i = allImgslinks[currentImgN];
 	document.getElementById("cimg").src = i;
-	RunDisgalery();
-	console.log("DisGalery Image Number : " + (currentImgN+1) + "/" + (allimgsN));
+	RunDisgallery();
+	console.log("Disgallery Image Number : " + (currentImgN+1) + "/" + (allimgsN));
 }
 
 function checkKey(event) {
@@ -85,7 +84,7 @@ function checkKey(event) {
 	}
 	if(x == F12){
 		presentationON = true;
-    	RunDisgalery(1);
+    	RunDisgallery(1);
 	}
 	if(x == F11){ //DOWNLOAD IMAGE
 		if(!presentationON)return;
@@ -111,22 +110,22 @@ function logMouseButton(e) {
 	}
 }
 
-Disgalery.prototype.getSettingsPanel = function () {
+Disgallery.prototype.getSettingsPanel = function () {
     return "<h3>Settings Panel</h3>";
 };
 
-Disgalery.prototype.getName = function () {
-    return "Disgalery";
+Disgallery.prototype.getName = function () {
+    return "Disgallery";
 };
 
-Disgalery.prototype.getDescription = function () {
-    return "Disgalery";
+Disgallery.prototype.getDescription = function () {
+    return "Disgallery";
 };
 
-Disgalery.prototype.getVersion = function () {
+Disgallery.prototype.getVersion = function () {
     return "0.1.1";
 };
 
-Disgalery.prototype.getAuthor = function () {
+Disgallery.prototype.getAuthor = function () {
     return "906Eventyon";
 };
