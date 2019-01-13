@@ -16,43 +16,43 @@ var allImgs;
 var allImgslinks;
 var currentImgN = 0;
 var startImgLink;
-//var Counter;
+var presentationON = false;
+var galerySpace;
 
 var Disgalery = function(){}
 
 Disgalery.prototype.start = function () {
 	document.onkeydown = checkKey;
+	document.addEventListener('mouseup', logMouseButton);
 };
 
 
 function RunDisgalery(init = 0){
-	
-		//GET IMAGES
-		allImgs = document.getElementsByClassName("da-imageWrapper da-imageZoom da-clickable da-embedWrapper");
-		allimgsN = allImgs.length;
-	
-		allImgslinks = [allImgs.length];
-		for (var i=0; i < allImgs.length; i++) {
-			allImgslinks[i] = allImgs[i].href;
-			//if(allImgslinks[i] == startImgLink[0] && init==1){
-			//	currentImgN = i;
-			//	console.log(currentImgN);
-			//} 
-		}
-	
-		//start GALERY
-		var galerySpace = document.getElementsByClassName("da-modal");
-		galerySpace[0].innerHTML = '<div style="z-index: 10000; -webkit-flex: 1 0 auto;\
-		flex: 1 0 auto;\
-		display: -webkit-flex;\
-		display: flex;\
-		-webkit-align-items: flex-start;\
-		align-items: flex-start;\
-		-webkit-justify-content: space-around;\
-		justify-content: space-around;\
-		overflow: hidden;\
-		width: auto;" class="a-gal inner-1_1f7b"><img style="max-height: 100vh; max-width: 100%;" class="imageWrapper-38T7d9" id="cimg" src=""><a id="ilink" href=""></img></div>';
+		
+	//GET IMAGES
+	allImgs = document.getElementsByClassName("da-imageWrapper da-imageZoom da-clickable da-embedWrapper");
+	allimgsN = allImgs.length;
 
+	allImgslinks = [allImgs.length];
+	for (var i=0; i < allImgs.length; i++) {
+		allImgslinks[i] = allImgs[i].href;
+	}
+
+	//start GALERY
+	galerySpace = document.getElementsByClassName("da-modal");
+	galerySpace[0].innerHTML = '<div style="z-index: 10000; -webkit-flex: 1 0 auto;\
+	flex: 1 0 auto;\
+	display: -webkit-flex;\
+	display: flex;\
+	-webkit-align-items: flex-start;\
+	align-items: flex-start;\
+	-webkit-justify-content: space-around;\
+	justify-content: space-around;\
+	overflow: hidden;\
+	width: auto;" class="a-gal inner-1_1f7b"><img style="max-height: 100vh; max-width: 100%;" class="imageWrapper-38T7d9" id="cimg" src=""><a id="ilink" href=""></img></div>';
+
+		
+	
 	document.getElementById("cimg").src = allImgslinks[currentImgN];
 }
 
@@ -66,7 +66,7 @@ function scrollImg(n){
 	var i = allImgslinks[currentImgN];
 	document.getElementById("cimg").src = i;
 	RunDisgalery();
-	console.log(currentImgN + "/" + allimgsN);
+	console.log("DisGalery Image Number : " + (currentImgN+1) + "/" + (allimgsN));
 }
 
 function checkKey(event) {
@@ -84,9 +84,11 @@ function checkKey(event) {
     	scrollImg(-1);
 	}
 	if(x == F12){
+		presentationON = true;
     	RunDisgalery(1);
 	}
 	if(x == F11){ //DOWNLOAD IMAGE
+		if(!presentationON)return;
 		var a = $("<a>")
 		.attr("href", allImgslinks[currentImgN])
 		.attr("download", "img.png")
@@ -95,6 +97,17 @@ function checkKey(event) {
 		a[0].click();
 	
 		a.remove();
+	}
+	if(event.key == "Escape"){
+		presentationON = false;
+	}
+
+}
+
+function logMouseButton(e) {
+	if(e.button == 0){
+		//console.log("!")
+		presentationON = false;
 	}
 }
 
@@ -111,7 +124,7 @@ Disgalery.prototype.getDescription = function () {
 };
 
 Disgalery.prototype.getVersion = function () {
-    return "0.1.0";
+    return "0.1.1";
 };
 
 Disgalery.prototype.getAuthor = function () {
